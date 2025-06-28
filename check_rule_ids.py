@@ -73,17 +73,6 @@ def main():
         print("✅ No rule files were changed in this PR.")
         return
 
-    # print(f"🔍 Checking these files for conflicts: {[f.name for f in changed_files]}")
-
-    # changed_ids = get_rule_ids_in_files(changed_files)
-    # main_ids = get_all_main_rule_ids()
-    # conflicts = changed_ids & main_ids
-
-    # if conflicts:
-    #     print(f"❌ Conflicting rule IDs: {sorted(conflicts)}")
-    #     sys.exit(1)
-    # else:
-    #     print("✅ No rule ID conflicts.")
 
     print(f"🔍 Checking these files for conflicts: {[f.name for f in changed_files]}")
     main_ids = get_all_main_rule_ids()
