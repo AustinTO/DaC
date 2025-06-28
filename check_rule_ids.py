@@ -99,7 +99,7 @@ def main():
             continue
         conflicts = file_ids & main_ids
         if conflicts:
-            print(f"❌ Conflicting rule IDs in {path.name}: {sorted(conflicts)}")
+            print(f"❌ Conflicting rule IDs in {path.name} file. Rule IDs: {sorted(conflicts)}")
             sys.exit(1)
         else:
             print(f"✅ No rule ID conflicts in {path.name}.")
