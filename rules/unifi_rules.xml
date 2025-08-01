@@ -1,0 +1,144 @@
+<group name="local,syslog,sshd,unifi,">
+
+  <rule id="900100" level="3">
+    <decoded_as>unifi_udm_generic</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>mcad</match>
+    <description>Unifi generic catch-all rule.</description>
+  </rule>
+
+  <rule id="900101" level="5">
+    <group>lan,</group>
+    <decoded_as>unifi_udm_lan_in</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>(Block|Deny)</match>
+    <description>Unifi route denied LAN IN flow event.</description>
+  </rule>
+
+  <rule id="900102" level="5">
+    <group>lan,</group>
+    <decoded_as>unifi_udm_lan_out</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>(Block|Deny)</match>
+    <description>Unifi route denied LAN OUT flow event.</description>
+  </rule>
+
+  <rule id="900103" level="5">
+    <group>wan,</group>
+    <decoded_as>unifi_udm_wan_in</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>(Block|Deny)</match>
+    <description>Unifi route denied WAN IN flow event.</description>
+  </rule>
+
+  <rule id="900104" level="5">
+    <group>wan,</group>
+    <decoded_as>unifi_udm_wan_out</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>(Block|Deny)</match>
+    <description>Unifi route denied WAN OUT flow event.</description>
+  </rule>
+
+  <rule id="900105" level="5">
+    <group>lan,</group>
+    <decoded_as>unifi_udm_lan_in</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>Allow</match>
+    <description>Unifi route allowed LAN IN flow event.</description>
+  </rule>
+
+  <rule id="900106" level="5">
+    <group>lan,</group>
+    <decoded_as>unifi_udm_lan_out</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>Allow</match>
+    <description>Unifi route allowed LAN OUT flow event.</description>
+  </rule>
+
+  <rule id="900107" level="5">
+    <group>wan,</group>
+    <decoded_as>unifi_udm_wan_in</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>Allow</match>
+    <description>Unifi route allowed WAN IN flow event.</description>
+  </rule>
+
+  <rule id="900108" level="5">
+    <group>wan,</group>
+    <decoded_as>unifi_udm_wan_out</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>Allow</match>
+    <description>Unifi route allowed WAN OUT flow event.</description>
+  </rule>
+
+  <rule id="900109" level="5">
+    <group>wan,</group>
+    <decoded_as>unifi_udm_dnat</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>PortForward</match>
+    <description>Unifi route allowed DNAT flow event.</description>
+  </rule>
+
+  <rule id="900110" level="5">
+    <group>lan,</group>
+    <decoded_as>unifi_udm_lan_local</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>(Block|Deny)</match>
+    <description>Unifi route denied LAN LOCAL flow event.</description>
+  </rule>
+
+  <rule id="900111" level="5">
+    <group>wan,</group>
+    <decoded_as>unifi_udm_wan_local</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>(Block|Deny)</match>
+    <description>Unifi route denied WAN LOCAL flow event.</description>
+  </rule>
+
+  <rule id="900112" level="5">
+    <group>lan,</group>
+    <decoded_as>unifi_udm_lan_local</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>Allow</match>
+    <description>Unifi route allowed LAN LOCAL flow event.</description>
+  </rule>
+
+  <rule id="900113" level="5">
+    <group>wan,</group>
+    <decoded_as>unifi_udm_wan_local</decoded_as>
+    <hostname>UDM-Pro</hostname>
+    <match>Allow</match>
+    <description>Unifi route allowed WAN LOCAL flow event.</description>
+  </rule>
+  
+<!--Downgrades WAN Out port 443 to level 0-->
+  <rule id="900114" level="0" overwrite="yes">
+    <if_sid>900108</if_sid>
+    <group>wan,</group>
+    <dstport>^80$|^443$</dstport>
+    <description>Unifi route allowed WAN OUT flow event.</description>
+  </rule>
+  
+<!--Downgrades WAN Out port 53 to approved DNS Servers to level 0-->
+  <rule id="900115" level="0" overwrite="yes">
+    <if_sid>900108</if_sid>
+    <group>wan,</group>
+    <dstport>^53$</dstport>
+    <dstip>8.8.8.8</dstip>
+    <dstip>8.4.4.8</dstip>
+    <dstip>1.1.1.1</dstip>
+    <dstip>1.0.0.1</dstip>
+    <description>Unifi route allowed WAN OUT flow event.</description>
+  </rule>
+
+<!--Downgrades LAN IN port 514 from approved Syslog senders to level 0-->
+  <rule id="900116" level="0" overwrite="yes">
+    <if_sid>900105</if_sid>
+    <group>lan,</group>
+    <dstport>^514$</dstport>
+    <srcip>10.0.0.0/24</srcip>
+    <srcip>10.99.99.10</srcip>
+    <description>Unifi route allowed LAN IN flow event.</description>
+  </rule>
+
+</group>

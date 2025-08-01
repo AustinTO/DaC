@@ -1,0 +1,47 @@
+<decoder name="unifi_udm_lan_in">
+  <prematch type="pcre2">\[LAN_IN-.*\] DESCR=\".*\" IN=.* OUT=.* MAC=.* SRC=.* DST=.* LEN=.* TOS=.* PREC=.* TTL=.* ID=.* DF PROTO=.* SPT=.* DPT=.*</prematch>
+  <regex type="pcre2">\[LAN_IN-(.*)\] DESCR=\"(.*)\" IN=(.*) OUT=(.*) MAC=(.*) SRC=(.*) DST=(.*) LEN=(.*) TOS=(.*) PREC=(.*) TTL=(.*) ID=(.*) DF PROTO=(.*) SPT=(.*) DPT=(\S+)</regex>
+  <order>lan_in_rule, description, in, out, mac, srcip, dstip, length, tos, prec, ttl, id, protocol, srcport, dstport</order>
+</decoder>
+
+<decoder name="unifi_udm_lan_out">
+  <prematch type="pcre2">\[LAN_OUT-.*\] DESCR=\".*\" IN=.* OUT=.* MAC=.* SRC=.* DST=.* LEN=.* TOS=.* PREC=.* TTL=.* ID=.* DF PROTO=.* SPT=.* DPT=.*</prematch>
+  <regex type="pcre2">\[LAN_OUT-(.*)\] DESCR=\"(.*)\" IN=(.*) OUT=(.*) MAC=(.*) SRC=(.*) DST=(.*) LEN=(.*) TOS=(.*) PREC=(.*) TTL=(.*) ID=(.*) DF PROTO=(.*) SPT=(.*) DPT=(\S+)</regex>
+  <order>lan_out_rule, description, in, out, mac, srcip, dstip, length, tos, prec, ttl, id, protocol, srcport, dstport</order>
+</decoder>
+
+<decoder name="unifi_udm_lan_local">
+  <prematch type="pcre2">\[LAN_LOCAL-.*\] DESCR=\".*\" IN=.* OUT=.* MAC=.* SRC=.* DST=.* LEN=.* TOS=.* PREC=.* TTL=.* ID=.* DF PROTO=.* SPT=.* DPT=.*</prematch>
+  <regex type="pcre2">\[LAN_LOCAL-(.*)\] DESCR=\"(.*)\" IN=(.*) OUT=(.*) MAC=(.*) SRC=(.*) DST=(.*) LEN=(.*) TOS=(.*) PREC=(.*) TTL=(.*) ID=(.*) DF PROTO=(.*) SPT=(.*) DPT=(\S+)</regex>
+  <order>lan_out_rule, description, in, out, mac, srcip, dstip, length, tos, prec, ttl, id, protocol, srcport, dstport</order>
+</decoder>
+
+<decoder name="unifi_udm_wan_in">
+  <prematch type="pcre2">\[WAN_IN-.*\] DESCR=\".*\" IN=.* OUT=.* MAC=.* SRC=.* DST=.* LEN=.* TOS=.* PREC=.* TTL=.* ID=.* DF PROTO=.* SPT=.* DPT=.*</prematch>
+  <regex type="pcre2">\[WAN_IN-(.*)\] DESCR=\"(.*)\" IN=(.*) OUT=(.*) MAC=(.*) SRC=(.*) DST=(.*) LEN=(.*) TOS=(.*) PREC=(.*) TTL=(.*) ID=(.*) DF PROTO=(.*) SPT=(.*) DPT=(\S+)</regex>
+  <order>wan_in_rule, description, in, out, mac, srcip, dstip, length, tos, prec, ttl, id, protocol, srcport, dstport</order>
+</decoder>
+
+<decoder name="unifi_udm_wan_out">
+  <prematch type="pcre2">\[WAN_OUT-.*\] DESCR=\".*\" IN=.* OUT=.* MAC=.* SRC=.* DST=.* LEN=.* TOS=.* PREC=.* TTL=.* ID=.* DF PROTO=.* SPT=.* DPT=.*</prematch>
+  <regex type="pcre2">\[WAN_OUT-(.*)\] DESCR=\"(.*)\" IN=(.*) OUT=(.*) MAC=(.*) SRC=(.*) DST=(.*) LEN=(.*) TOS=(.*) PREC=(.*) TTL=(.*) ID=(.*) DF PROTO=(.*) SPT=(.*) DPT=(\S+)</regex>
+  <order>wan_out_rule, description, in, out, mac, srcip, dstip, length, tos, prec, ttl, id, protocol, srcport, dstport</order>
+</decoder>
+
+<decoder name="unifi_udm_wan_local">
+  <prematch type="pcre2">\[WAN_LOCAL-.*\] DESCR=\".*\" IN=.* OUT=.* MAC=.* SRC=.* DST=.* LEN=.* TOS=.* PREC=.* TTL=.* ID=.* DF PROTO=.* SPT=.* DPT=.*</prematch>
+  <regex type="pcre2">\[WAN_LOCAL-(.*)\] DESCR=\"(.*)\" IN=(.*) OUT=(.*) MAC=(.*) SRC=(.*) DST=(.*) LEN=(.*) TOS=(.*) PREC=(.*) TTL=(.*) ID=(.*) DF PROTO=(.*) SPT=(.*) DPT=(\S+)</regex>
+  <order>wan_out_rule, description, in, out, mac, srcip, dstip, length, tos, prec, ttl, id, protocol, srcport, dstport</order>
+</decoder>
+
+<decoder name="unifi_udm_dnat">
+  <prematch type="pcre2">\[PREROUTING-DNAT-.*\] DESCR=\".*\" IN=.* OUT=.* MAC=.* SRC=.* DST=.* LEN=.* TOS=.* PREC=.* TTL=.* ID=.* DF PROTO=.* SPT=.* DPT=.*</prematch>
+  <regex type="pcre2">\[PREROUTING-DNAT-(.*)\] DESCR=\"(.*)\" IN=(.*) OUT=(.*) MAC=(.*) SRC=(.*) DST=(.*) LEN=(.*) TOS=(.*) PREC=(.*) TTL=(.*) ID=(.*) DF PROTO=(.*) SPT=(.*) DPT=(\S+)</regex>
+  <order>dnat_rule, description, in, out, mac, srcip, dstip, length, tos, prec, ttl, id, protocol, srcport, dstport</order>
+</decoder>
+
+<decoder name="unifi_udm_generic">
+  <prematch type="pcre2">UDM-Pro </prematch>
+  <regex type="pcre2">UDM-Pro (.*)</regex>
+  <order>udm_generic_data</order>
+</decoder>

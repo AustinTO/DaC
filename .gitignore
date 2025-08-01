@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> 677d93f (Initial commit)
 # Ignore the following files
 
 client.keys
@@ -14,4 +17,7 @@ sslmanager.key
 lists/
 rootcheck/
 shared/
+<<<<<<< HEAD
 
+=======
+>>>>>>> 677d93f (Initial commit)

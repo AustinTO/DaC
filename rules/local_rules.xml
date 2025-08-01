@@ -16,4 +16,103 @@
     <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,</group>
   </rule>
 
+<<<<<<< HEAD
+=======
+ <!-- Modified to known Invoke-Command script that is common --> 
+  <rule id="722001" level="8" overwrite="yes">
+    <if_sid>91823</if_sid>
+    <field name="win.eventdata.scriptBlockText" type="pcre2">(?i)\$steppablePipeline\.Process\(\$_\).*\$steppablePipeline\.End\(\)</field>
+    <description>Powershell script used "Invoke-command" cmdlet to execute code on remote computer - Likely benign</description>
+  </rule>
+
+ <!-- Modified for expected use of FodHelper on HYPERV for Veeam --> 
+  <rule id="722002" level="3">
+    <if_sid>92055</if_sid>
+    <field name="agent.name" type="pcre2">(?i)HYPERV</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)\\\\Windows\\\\System32\\\\FodHelper\.exe -Embedding</field>
+    <field name="win.eventdata.parentCommandLine" type="pcre2">(?i)\\\\Windows\\\\system32\\\\svchost\.exe -k DcomLaunch -p</field>
+    <description>Known auto-elevated utility FodHelper.EXE may have been used to bypass UAC however likely expected</description>
+  </rule>
+
+ <!-- Modified for legitmate parent image, MsMpEng.exe --> 
+  <rule id="722003" level="3" overwrite="yes">
+    <if_sid>61618</if_sid>
+    <field name="win.eventdata.parentImage" type="pcre2">\\MsMpEng\.exe</field>
+    <description>Sysmon - Legitimate Parent Image - MsMpEng.exe</description>
+  </rule>
+
+ <!-- Modified for expected Wazuh agent update --> 
+  <rule id="722004" level="3" overwrite="yes">
+    <if_sid>92057</if_sid>
+    <field name="win.eventdata.currentDirectory" type="pcre2">(?i)C:\\\\Program Files \(x86\)\\\\ossec-agent</field>
+    <description>Legitimate Current Directory for Wazuh agent</description>
+  </rule>
+
+ <!-- Modified to downgrade known legitmate processes --> 
+  <rule id="722005" level="4" overwrite="yes">
+    <if_sid>92151</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)C:\\\\(Program(Data| Files)\\\\Veeam\\\\.*\\\\(Veeam\.Backup\.(UIServer|ExternalInfrastructure\.DbProvider|Manager|shell|RestAPIService)|HFWizard)\.exe|Windows\\\\Microsoft\.NET\\\\Framework64\\\\v[0-9\.]+\\\\InstallUtil\.exe|ProgramData\\\\chocolatey\\\\choco\.exe)</field>
+    <description>Binary loaded PowerShell automation library - Likely legitimate activity</description>
+  </rule>
+
+ <!-- Downgrade Phishing and Malware alerts that were originally prevented --> 
+  <rule id="722006" level="9" overwrite="yes">
+    <if_sid>91556</if_sid>
+    <field name="office365.OriginalDeliveryLocation" type="pcre2">(?i)(JunkFolder|Quarantine|Dropped|Failed)</field>
+    <description>Office 365: Prevented phishing and malware events from Exchange Online Protection and Microsoft Defender for Office.</description>
+  </rule>
+
+ <!-- Modified for empty parent image --> 
+  <rule id="722007" level="10" overwrite="yes">
+    <if_sid>61618</if_sid>
+    <field name="win.eventdata.parentImage">-</field> 
+    <description>svchost.exe - Empty Parent Image</description>
+  </rule>
+   
+  <rule id="722008" level="10" overwrite="yes">
+    <if_sid>61638</if_sid>
+    <field name="win.eventdata.parentImage">-</field> 
+    <description>dllhost.exe - Empty Parent Image</description>
+  </rule>
+   
+  <rule id="722009" level="3">
+    <if_sid>100502</if_sid>
+    <field name="win.eventdata.parentImage" type="pcre2">\\AsusSoftwareManager\.exe</field>
+    <description>PowerShell Execution Policy Bypass detected - Expected for AsusSoftwareManager</description>
+  </rule>
+  
+<!-- Rule ID 100622 Override Trusted Domains -->
+<rule id="100626" level="3" overwrite="yes">
+    <if_sid>100622</if_sid>
+    <field name="misp.type">domain</field>
+    <field name="misp.value">aka\.ms|api\.onedrive\.com|www\.googleapis\.com|discord\.com|cdn\.discordapp\.com|dl\.google\.com|facebook\.com|dash\.cloudflare\.com|vimeo\.com|my\.microsoftpersonalcontent\.com|api\.github\.com|github\.githubassets\.com</field>
+    <description>MISP - IoC found in Threat Intel - Category: $(misp.category), Attribute: $(misp.value)</description>
+  </rule>
+  
+<!-- Rule ID 100622 Override benign hash -->
+<rule id="100627" level="0" overwrite="yes">
+    <if_sid>100622</if_sid>
+    <field name="misp.type">sha256</field>
+    <field name="misp.value">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855|6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b|518f10ce7481679f7fc43b931d3a2ddcb5a6ffcd08b7ab81449581496d4064b6|766a0cb00226f61af0d680c177aef7313e117666f8faf7c982609f782af37d28</field>
+    <description>MISP - IoC found in Threat Intel - Category: $(misp.category), Attribute: $(misp.value)</description>
+  </rule>
+  
+<!-- Rule ID 100622 Override DC filename -->
+<rule id="100628" level="0" overwrite="yes">
+    <if_sid>100622</if_sid>
+    <field name="misp.type">filename</field>
+    <field name="misp.value">^dc$</field>
+    <field name="misp.source.description">^Sysmon - Event 22</field>
+    <description>MISP - IoC found in Threat Intel - Category: $(misp.category), Attribute: $(misp.value)</description>
+  </rule>
+  
+<!-- Rule ID 100622 Override IP Destination -->
+<rule id="100629" level="3" overwrite="yes">
+    <if_sid>100622</if_sid>
+    <field name="misp.type">ip-dst</field>
+    <field name="misp.value">^52.123.128.14$|^52.123.129.14$</field>
+    <description>MISP - IoC found in Threat Intel - Category: $(misp.category), Attribute: $(misp.value)</description>
+  </rule>
+
+>>>>>>> 677d93f (Initial commit)
 </group>
