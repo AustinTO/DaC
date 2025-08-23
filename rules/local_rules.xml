@@ -16,4 +16,15 @@
     <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,</group>
   </rule>
 
+  <rule id="99999" level="10">
+    <description>Teams integration test alert</description>
+    <regex>test-alert</regex>
+    <group>custom_alert</group>
+  </rule>
+
+  <rule id="119999" level="3">
+    <regex>^test$</regex>
+    <description>Test rule to configure integration</description>
+  </rule>
+
 </group>

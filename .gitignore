@@ -1,4 +1,3 @@
-
 # Ignore the following files
 
 client.keys
@@ -9,9 +8,12 @@ sslmanager.cert
 localtime
 sslmanager.key
 
+root-ca.key
+root-ca.pem
+root-ca.srl
+sslmanager.csr
 # Ignore the following directories
 
 lists/
 rootcheck/
 shared/
-
