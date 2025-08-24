@@ -26,5 +26,8 @@
     <regex>^test$</regex>
     <description>Test rule to configure integration</description>
   </rule>
-
+  <rule id="119998" level="3">
+    <regex>^test$</regex>
+    <description>Test rule to configure integration</description>
+  </rule>
 </group>
