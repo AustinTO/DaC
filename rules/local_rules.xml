@@ -4,7 +4,7 @@
 <!-- Copyright (C) 2015, Wazuh Inc. -->
 
 <!-- Example -->
-<group name="sysmon,windows,local,">
+<!-- <group name="sysmon,windows,local,">
   <!-- Silence cleanmgr temp DLL writes that are legit Disk Cleanup -->
   <rule id="100205" level="0">
     <!-- Narrow to the detection rule that is firing in your alerts -->
@@ -16,4 +16,4 @@
     <description>Exclude benign cleanmgr temp DLL creation</description>
     <options>no_full_log</options>
   </rule>
-</group>
+</group> -->
