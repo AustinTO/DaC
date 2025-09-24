@@ -1,35 +1,19 @@
-<!-- Local Decoders -->
-
-<!-- Modify it at your will. -->
-<!-- Copyright (C) 2015, Wazuh Inc. -->
-
-<!--
-  - Allowed static fields:
-  - location   - where the log came from (only on FTS)
-  - srcuser    - extracts the source username
-  - dstuser    - extracts the destination (target) username
-  - user       - an alias to dstuser (only one of the two can be used)
-  - srcip      - source ip
-  - dstip      - dst ip
-  - srcport    - source port
-  - dstport    - destination port
-  - protocol   - protocol
-  - id         - event id
-  - url        - url of the event
-  - action     - event action (deny, drop, accept, etc)
-  - status     - event status (success, failure, etc)
-  - extra_data - Any extra data
--->
-
+<!-- Local Decoders for Fail2Ban -->
 <decoders>
-  <!-- Matches lines like:
-       2025-09-24 12:34:56,789 fail2ban.actions [1234]: NOTICE  [sshd] Ban 1.2.3.4
-       2025-09-24 12:34:56,789 fail2ban.actions [1234]: NOTICE  [sshd] Unban 1.2.3.4
-  -->
-  <decoder name="fail2ban-base">
-    <prematch>fail2ban\.</prematch>
-    <regex>^\d{4}-\d{2}-\d{2}[^[]+\[\d+\]:\s+\w+\s+\[(\S+)\]\s+(Ban|Unban)\s+(\S+)</regex>
-    <order>fail2ban.jail,fail2ban.action,srcip</order>
-  </decoder>
-</decoders>
 
+  <!-- Stage 1: match program name like "fail2ban.actions" -->
+  <decoder name="fail2ban-prog">
+    <program_name>^fail2ban</program_name>
+  </decoder>
+
+  <!-- Stage 2: extract jail, action, and src IP -->
+  <!-- Matches:
+       2025-09-24 12:34:56,789 fail2ban.actions[1234]: NOTICE  [sshd] Ban 1.2.3.4
+       2025-09-24 12:34:56,789 fail2ban.actions[1234]: NOTICE  [sshd] Unban 1.2.3.4 -->
+  <decoder name="fail2ban-base">
+    <parent>fail2ban-prog</parent>
+    <regex>\[(\S+)\]\s+(Ban|Unban)\s+(\S+)</regex>
+    <order>f2b_jail,f2b_action,srcip</order>
+  </decoder>
+
+</decoders>
