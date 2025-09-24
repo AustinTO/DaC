@@ -7,17 +7,6 @@
     <group>demo,testing,</group>
   </rule>
 
-  <!-- 120001: aggregate 5 sshd auth failures from same source IP within 60s -->
-  <!-- Base rule 5716 already exists in default ruleset -->
-  <rule id="120001" level="8">
-    <if_matched_sid>5716</if_matched_sid>
-    <same_srcip/>
-    <frequency>5</frequency>
-    <timeframe>60</timeframe>
-    <description>DEV DEMO: 5 sshd authentication failures from same IP in 60s</description>
-    <group>authentication_failed,ssh,bruteforce,</group>
-  </rule>
-
   <!-- 120010: Sysmon example: PowerShell process creation -->
   <rule id="120010" level="5">
     <if_group>sysmon_event1</if_group>
