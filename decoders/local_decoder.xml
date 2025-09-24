@@ -1,19 +1,17 @@
-<!-- Local Decoders for Fail2Ban -->
 <decoders>
-
-  <!-- Stage 1: match program name like "fail2ban.actions" -->
-  <decoder name="fail2ban-prog">
-    <program_name>^fail2ban</program_name>
+  <!-- Stage 1: only touch Fail2Ban lines -->
+  <decoder name="fail2ban-line">
+    <prematch>fail2ban\.(actions|filter)</prematch>
   </decoder>
 
-  <!-- Stage 2: extract jail, action, and src IP -->
-  <!-- Matches:
-       2025-09-24 12:34:56,789 fail2ban.actions[1234]: NOTICE  [sshd] Ban 1.2.3.4
-       2025-09-24 12:34:56,789 fail2ban.actions[1234]: NOTICE  [sshd] Unban 1.2.3.4 -->
-  <decoder name="fail2ban-base">
-    <parent>fail2ban-prog</parent>
-    <regex>\[(\S+)\]\s+(Ban|Unban)\s+(\S+)</regex>
+  <!-- Stage 2: extract jail, action, and src IP from Ban/Unban lines -->
+  <!-- Examples:
+       2025-09-24 12:34:56,789 fail2ban.actions [1234]: NOTICE  [sshd] Ban 1.2.3.4
+       2025-09-24 12:35:10,111 fail2ban.actions [1234]: NOTICE  [sshd] Unban 2001:db8::1
+  -->
+  <decoder name="fail2ban-banunban">
+    <parent>fail2ban-line</parent>
+    <regex>\[([^\]]+)\]\s+(Ban|Unban)\s+([0-9A-Fa-f:\.]+)</regex>
     <order>f2b_jail,f2b_action,srcip</order>
   </decoder>
-
 </decoders>
