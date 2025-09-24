@@ -18,7 +18,7 @@
   <!-- 110001: Aggregate repeated SSH auth failures from the same IP -->
   <!-- Requires the base sshd fail rule 5716 which exists in the default ruleset -->
   <rule id="110001" level="8">
-    <if_sid>5716</if_sid>
+    <if_matched_sid>5716</if_matched_sid>
     <same_source_ip />
     <frequency>5</frequency>
     <timeframe>60</timeframe>
