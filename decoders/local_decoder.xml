@@ -1,9 +1,12 @@
 <decoder name="fail2ban-line">
-  <prematch>fail2ban\.(actions|filter)</prematch>
+  <!-- No groups; OS_Regex alternation is top-level only.
+       Also, '.' is a literal dot in OS_Regex. -->
+  <prematch>fail2ban.actions|fail2ban.filter</prematch>
 </decoder>
 
 <decoder name="fail2ban-banunban">
   <parent>fail2ban-line</parent>
-  <regex>\[([^\]]+)\]\s+(Ban|Unban)\s+(\S+)</regex>
+  <!-- Capture: jail, action, IP. Avoid (Ban|Unban); use \w+ instead. -->
+  <regex>\[(\S+)\]\s+(\w+)\s+(\S+)</regex>
   <order>f2b_jail,f2b_action,srcip</order>
 </decoder>
