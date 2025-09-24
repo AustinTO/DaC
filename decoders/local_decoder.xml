@@ -1,9 +1,9 @@
 <decoder name="fail2ban-line">
-  <prematch>fail2ban.</prematch>
+  <prematch>fail2ban\.(actions|filter)</prematch>
 </decoder>
 
 <decoder name="fail2ban-banunban">
   <parent>fail2ban-line</parent>
-  <regex>NOTICE\s+\[([^\]]+)\]\s+(Ban|Unban)\s+(\S+)</regex>
+  <regex>\[([^\]]+)\]\s+(Ban|Unban)\s+(\S+)</regex>
   <order>f2b_jail,f2b_action,srcip</order>
 </decoder>
