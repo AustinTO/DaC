@@ -1,43 +1,29 @@
-<!-- demo_rule.xml
-     Purpose: safe demo rules for RaC dev branch
-     Place at: rules/demo_rule.xml
--->
-
 <group name="local,dev_demo,">
-  <!-- 110000: Simple string match to prove the pipeline works -->
-  <rule id="110000" level="3">
-    <if_matched_sid />
+
+  <!-- 120000: simple pipeline sanity check -->
+  <rule id="120000" level="3">
     <match>DEMO_TRIGGER</match>
-    <description>DEV DEMO: Saw the string DEMO_TRIGGER in an ingested event.</description>
+    <description>DEV DEMO: saw string DEMO_TRIGGER in an ingested event</description>
     <group>demo,testing,</group>
-    <mitre>
-      <id>T0000</id>
-    </mitre>
   </rule>
 
-  <!-- 110001: Aggregate repeated SSH auth failures from the same IP -->
-  <!-- Requires the base sshd fail rule 5716 which exists in the default ruleset -->
-  <rule id="110001" level="8">
+  <!-- 120001: aggregate 5 sshd auth failures from same source IP within 60s -->
+  <!-- Base rule 5716 already exists in default ruleset -->
+  <rule id="120001" level="8">
     <if_matched_sid>5716</if_matched_sid>
-    <same_source_ip />
+    <same_srcip/>
     <frequency>5</frequency>
     <timeframe>60</timeframe>
-    <description>DEV DEMO: 5 sshd authentication failures from the same source IP in 60s.</description>
+    <description>DEV DEMO: 5 sshd authentication failures from same IP in 60s</description>
     <group>authentication_failed,ssh,bruteforce,</group>
-    <mitre>
-      <id>T1110</id>
-    </mitre>
   </rule>
 
-  <!-- 110010: Windows Sysmon example match on process image -->
-  <!-- Fires when Sysmon reports powershell.exe execution -->
-  <rule id="110010" level="5">
+  <!-- 120010: Sysmon example: PowerShell process creation -->
+  <rule id="120010" level="5">
     <if_group>sysmon_event1</if_group>
-    <field name="win.eventdata.image">(?i)\\powershell\.exe$</field>
-    <description>DEV DEMO: Sysmon process create for PowerShell.</description>
+    <field name="win.eventdata.Image">(?i)\\powershell\.exe$</field>
+    <description>DEV DEMO: Sysmon process create for PowerShell</description>
     <group>windows,sysmon,process_creation,</group>
-    <mitre>
-      <id>T1059.001</id>
-    </mitre>
   </rule>
+
 </group>
