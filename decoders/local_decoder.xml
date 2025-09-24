@@ -21,6 +21,15 @@
   - extra_data - Any extra data
 -->
 
-<decoder name="local_decoder_example">
-    <program_name>local_decoder_example</program_name>
-</decoder>
+<decoders>
+  <!-- Matches lines like:
+       2025-09-24 12:34:56,789 fail2ban.actions [1234]: NOTICE  [sshd] Ban 1.2.3.4
+       2025-09-24 12:34:56,789 fail2ban.actions [1234]: NOTICE  [sshd] Unban 1.2.3.4
+  -->
+  <decoder name="fail2ban-base">
+    <prematch>fail2ban\.</prematch>
+    <regex>^\d{4}-\d{2}-\d{2}[^[]+\[\d+\]:\s+\w+\s+\[(\S+)\]\s+(Ban|Unban)\s+(\S+)</regex>
+    <order>fail2ban.jail,fail2ban.action,srcip</order>
+  </decoder>
+</decoders>
+
