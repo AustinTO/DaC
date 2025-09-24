@@ -1,5 +1,5 @@
 <decoder name="fail2ban-line">
-  <prematch>fail2ban\.(actions|filter)</prematch>
+  <prematch>fail2ban.</prematch>
 </decoder>
 
 <decoder name="fail2ban-banunban">
