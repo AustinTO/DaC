@@ -4,16 +4,13 @@
 <!-- Copyright (C) 2015, Wazuh Inc. -->
 
 <!-- Example -->
-<group name="sysmon,windows,local,">
-  <!-- Silence cleanmgr temp DLL writes that are legit Disk Cleanup -->
+<group name="local,sysmon,windows">
+  <!-- Suppress Sysmon EID 11 'DLL dropped in Temp' when it's CleanMgr -->
   <rule id="100205" level="0">
-    <!-- Narrow to the detection rule that is firing in your alerts -->
-    <if_sid>92213</if_sid>
-    <!-- Match cleanmgr.exe as the writer -->
-    <field name="data.win.eventdata.image">(?i)\\cleanmgr\.exe$</field>
-    <!-- Match DLLs in user Temp only -->
-    <field name="data.win.eventdata.targetFilename">(?i)\\AppData\\Local\\Temp\\.*\.dll$</field>
-    <description>Exclude benign cleanmgr temp DLL creation</description>
-    <options>no_full_log</options>
+    <if_matched_sid>92213</if_matched_sid>
+    <field name="win.eventdata.image">(?i)cleanmgr\.exe$</field>
+    <field name="win.eventdata.targetFilename">(?i)\\AppData\\Local\\Temp\\.*\.dll$</field>
+    <description>Exclude benign CleanMgr temp DLL creation</description>
   </rule>
 </group>
+
