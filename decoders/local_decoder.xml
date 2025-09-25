@@ -1,12 +1,43 @@
-<decoder name="fail2ban-line">
-  <!-- No groups; OS_Regex alternation is top-level only.
-       Also, '.' is a literal dot in OS_Regex. -->
-  <prematch>fail2ban.actions|fail2ban.filter</prematch>
+<!-- FAIL2BAN - Observer -->
+<decoder name="fail2ban.observer">
+  <program_name>^fail2ban.observer</program_name>
+  <prematch>NOTICE \p\w+\p Increase Ban</prematch>
+</decoder>
+<decoder name="fail2ban_observer_child">
+  <parent>fail2ban.observer</parent>
+  <regex>NOTICE (.+) Increase Ban (.+) \p\d+ \p (\d+\w+) .+</regex>
+  <order>service,srcip,bantime</order>
 </decoder>
 
-<decoder name="fail2ban-banunban">
-  <parent>fail2ban-line</parent>
-  <!-- Capture: jail, action, IP. Avoid (Ban|Unban); use \w+ instead. -->
-  <regex>\[(\S+)\]\s+(\w+)\s+(\S+)</regex>
-  <order>f2b_jail,f2b_action,srcip</order>
+<!-- FAIL2BAN - SERVICE STATUS EXITED -->
+<decoder name="fail2ban.server">
+  <program_name>^fail2ban.server</program_name>
+  <prematch>INFO Exiting Fail2ban</prematch>
+</decoder>
+<decoder name="fail2ban_server_exited">
+  <parent>fail2ban.server</parent>
+  <regex>(.+)</regex>
+  <order>exited_status</order>
+</decoder>
+
+<!-- FAIL2BAN - SERVICE STATUS STARTED -->
+<decoder name="fail2ban-server">
+  <program_name>^fail2ban-server</program_name>
+  <prematch>^Server ready</prematch>
+</decoder>
+<decoder name="fail2ban_server_started">
+  <parent>fail2ban-server</parent>
+  <regex>(.+)</regex>
+  <order>started_status</order>
+</decoder>
+
+<!-- FAIL2BAN - ACTIONS -->
+<decoder name="fail2ban.actions">
+  <program_name>^fail2ban.actions</program_name>
+  <prematch>NOTICE \p\w+\p \w+ \d+</prematch>
+</decoder>
+<decoder name="fail2ban_actions_child">
+  <parent>fail2ban.actions</parent>
+  <regex>NOTICE (.+) (.+) (\d+\.\d+\.\d+\.\d+)</regex>
+  <order>service,status,srcip</order>
 </decoder>
