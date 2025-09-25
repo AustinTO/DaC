@@ -1,0 +1,24 @@
+<!-- FAIL2BAN -->
+<group name="failban_logs,">
+
+  <rule id="100002" level="8">
+    <decoded_as>fail2ban.actions</decoded_as>
+    <description>Fail2ban Updates [ Host : $(srcip) , status: $(status) , Service: $(service) ]</description>
+  </rule>
+
+  <rule id="100003" level="10">
+    <decoded_as>fail2ban.observer</decoded_as>
+    <description>Fail2ban Updates [BANTIME] [ HOST : $(srcip) , Service: $(service) , Bantime Increment (mins) : $(bantime) ]</description>
+  </rule>
+
+  <rule id="100004" level="5">
+    <decoded_as>fail2ban.server</decoded_as>
+    <description>Fail2ban Updates [ Fail2Ban Service Stopped ]</description>
+  </rule>
+
+  <rule id="100005" level="5">
+    <decoded_as>fail2ban-server</decoded_as>
+    <description>Fail2ban Updates [ Fail2Ban Service Started / Restarted ]</description>
+  </rule>
+
+</group>
