@@ -1,25 +1,29 @@
 <group name="fail2ban,authentication,">
 
+  <!-- Ban / Unban -->
   <rule id="199950" level="10">
-    <decoded_as>f2b_actions_child</decoded_as>
+    <decoded_as>f2b_actions</decoded_as>
     <description>Fail2Ban: $(status) $(srcip) on $(service)</description>
     <options>no_full_log</options>
   </rule>
 
+  <!-- Found hits -->
   <rule id="199951" level="3">
-    <decoded_as>f2b_filter_child</decoded_as>
+    <decoded_as>f2b_filter</decoded_as>
     <description>Fail2Ban: Found $(srcip) on $(service) at $(event_time)</description>
     <options>no_full_log</options>
   </rule>
 
+  <!-- Service started -->
   <rule id="199952" level="4">
-    <decoded_as>f2b_server_start_child</decoded_as>
+    <decoded_as>f2b_server_start</decoded_as>
     <description>Fail2Ban: service started (v$(version))</description>
     <options>no_full_log</options>
   </rule>
 
+  <!-- Service stopped -->
   <rule id="199953" level="4">
-    <decoded_as>f2b_server_stop_child</decoded_as>
+    <decoded_as>f2b_server_stop</decoded_as>
     <description>Fail2Ban: service stopped</description>
     <options>no_full_log</options>
   </rule>
