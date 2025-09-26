@@ -1,43 +1,45 @@
-<!-- FAIL2BAN - Observer -->
-<decoder name="fail2ban.observer">
-  <program_name>^fail2ban.observer</program_name>
-  <prematch>NOTICE \p\w+\p Increase Ban</prematch>
-</decoder>
-<decoder name="fail2ban_observer_child">
-  <parent>fail2ban.observer</parent>
-  <regex>NOTICE (.+) Increase Ban (.+) \p\d+ \p (\d+\w+) .+</regex>
-  <order>service,srcip,bantime</order>
+<!-- Parent keys off program_name fail2ban and the 'actions' marker in the body -->
+<decoder name="f2b-actions">
+  <program_name>^fail2ban$</program_name>
+  <prematch>fail2ban.actions</prematch>
 </decoder>
 
-<!-- FAIL2BAN - SERVICE STATUS EXITED -->
-<decoder name="fail2ban.server">
-  <program_name>^fail2ban.server</program_name>
-  <prematch>INFO Exiting Fail2ban</prematch>
-</decoder>
-<decoder name="fail2ban_server_exited">
-  <parent>fail2ban.server</parent>
-  <regex>(.+)</regex>
-  <order>exited_status</order>
-</decoder>
-
-<!-- FAIL2BAN - SERVICE STATUS STARTED -->
-<decoder name="fail2ban-server">
-  <program_name>^fail2ban-server</program_name>
-  <prematch>^Server ready</prematch>
-</decoder>
-<decoder name="fail2ban_server_started">
-  <parent>fail2ban-server</parent>
-  <regex>(.+)</regex>
-  <order>started_status</order>
-</decoder>
-
-<!-- FAIL2BAN - ACTIONS -->
-<decoder name="fail2ban.actions">
-  <program_name>^fail2ban.actions</program_name>
-  <prematch>NOTICE \p\w+\p \w+ \d+</prematch>
-</decoder>
-<decoder name="fail2ban_actions_child">
-  <parent>fail2ban.actions</parent>
-  <regex>NOTICE (.+) (.+) (\d+\.\d+\.\d+\.\d+)</regex>
+<!-- Child extracts: service (jail), status (Ban|Unban), srcip (IPv4/IPv6) -->
+<decoder name="f2b-actions-child">
+  <parent>f2b-actions</parent>
+  <regex type="pcre2">\[([^\]]+)\]\s+(Ban|Unban)\s+(\S+)</regex>
   <order>service,status,srcip</order>
+</decoder>
+<decoder name="f2b-filter">
+  <program_name>^fail2ban$</program_name>
+  <prematch>fail2ban.filter</prematch>
+</decoder>
+
+<!-- Extract service, srcip, and the timestamp after the hyphen -->
+<decoder name="f2b-filter-child">
+  <parent>f2b-filter</parent>
+  <regex type="pcre2">\[([^\]]+)\]\s+Found\s+(\S+)\s+-\s+(.+)$</regex>
+  <order>service,srcip,event_time</order>
+</decoder>
+<decoder name="f2b-server-start">
+  <program_name>^fail2ban$</program_name>
+  <prematch>fail2ban.server</prematch>
+</decoder>
+
+<!-- Capture the version string -->
+<decoder name="f2b-server-start-child">
+  <parent>f2b-server-start</parent>
+  <regex type="pcre2">Starting\s+Fail2ban\s+v([0-9.]+)</regex>
+  <order>version</order>
+</decoder>
+<decoder name="f2b-server-start">
+  <program_name>^fail2ban$</program_name>
+  <prematch>fail2ban.server</prematch>
+</decoder>
+
+<!-- Capture the version string -->
+<decoder name="f2b-server-start-child">
+  <parent>f2b-server-start</parent>
+  <regex type="pcre2">Starting\s+Fail2ban\s+v([0-9.]+)</regex>
+  <order>version</order>
 </decoder>
