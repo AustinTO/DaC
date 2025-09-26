@@ -1,33 +1,26 @@
-<!-- /var/ossec/etc/rules/fail2ban_rules.xml -->
+<!-- /var/ossec/etc/rules/fail2ban.xml -->
 <group name="fail2ban,authentication,">
-
-  <!-- Ban / Unban lines parsed by: fail2ban_actions_child -->
-  <rule id="110502" level="10">
-    <if_decoder_name>fail2ban_actions_child</if_decoder_name>
+  <rule id="199900" level="10">
+    <decoded_as>fail2ban_actions_child</decoded_as>
     <description>Fail2Ban: $(status) $(srcip) on $(service)</description>
     <options>no_full_log</options>
   </rule>
 
-  <!-- Bantime increase parsed by: fail2ban_observer_child -->
-  <rule id="110503" level="8">
-    <if_decoder_name>fail2ban_observer_child</if_decoder_name>
+  <rule id="199901" level="8">
+    <decoded_as>fail2ban_observer_child</decoded_as>
     <description>Fail2Ban: bantime increased for $(srcip) on $(service) to $(bantime)</description>
     <options>no_full_log</options>
   </rule>
 
-  <!-- Service stopped parsed by: fail2ban_server_exited -->
-  <rule id="110504" level="5">
-    <if_decoder_name>fail2ban_server_exited</if_decoder_name>
+  <rule id="199902" level="5">
+    <decoded_as>fail2ban_server_exited</decoded_as>
     <description>Fail2Ban service stopped</description>
     <options>no_full_log</options>
   </rule>
 
-  <!-- Service started parsed by: fail2ban_server_started -->
-  <rule id="110505" level="5">
-    <if_decoder_name>fail2ban_server_started</if_decoder_name>
+  <rule id="199903" level="5">
+    <decoded_as>fail2ban_server_started</decoded_as>
     <description>Fail2Ban service started</description>
     <options>no_full_log</options>
   </rule>
-
 </group>
-
