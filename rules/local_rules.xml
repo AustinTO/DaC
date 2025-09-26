@@ -1,31 +1,9 @@
-<group name="fail2ban,authentication,">
-
-  <!-- Ban / Unban -->
-  <rule id="199950" level="10">
-    <decoded_as>f2b-actions-child</decoded_as>
-    <description>Fail2Ban: $(status) $(srcip) on $(service)</description>
-    <options>no_full_log</options>
+<group name="local,sysmon,windows">
+  <!-- Suppress Sysmon EID 11 'DLL dropped in Temp' when it's CleanMgr -->
+  <rule id="100205" level="0">
+    <if_matched_sid>92213</if_matched_sid>
+    <field name="win.eventdata.image">(?i)cleanmgr\.exe$</field>
+    <field name="win.eventdata.targetFilename">(?i)\\AppData\\Local\\Temp\\.*\.dll$</field>
+    <description>Exclude benign CleanMgr temp DLL creation</description>
   </rule>
-
-  <!-- Found hits (lower level, useful to see probing) -->
-  <rule id="199951" level="3">
-    <decoded_as>f2b-filter-child</decoded_as>
-    <description>Fail2Ban: Found $(srcip) on $(service) at $(event_time)</description>
-    <options>no_full_log</options>
-  </rule>
-
-  <!-- Service started -->
-  <rule id="199952" level="4">
-    <decoded_as>f2b-server-start-child</decoded_as>
-    <description>Fail2Ban: service started (v$(version))</description>
-    <options>no_full_log</options>
-  </rule>
-
-  <!-- Service stopped -->
-  <rule id="199953" level="4">
-    <decoded_as>f2b-server-stop-child</decoded_as>
-    <description>Fail2Ban: service stopped</description>
-    <options>no_full_log</options>
-  </rule>
-
 </group>
