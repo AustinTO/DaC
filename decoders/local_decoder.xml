@@ -1,45 +1,47 @@
-<!-- Parent keys off program_name fail2ban and the 'actions' marker in the body -->
-<decoder name="f2b-actions">
+<!-- Actions -->
+<decoder name="f2b_actions">
   <program_name>^fail2ban$</program_name>
   <prematch>fail2ban.actions</prematch>
 </decoder>
 
-<!-- Child extracts: service (jail), status (Ban|Unban), srcip (IPv4/IPv6) -->
-<decoder name="f2b-actions-child">
-  <parent>f2b-actions</parent>
+<decoder name="f2b_actions_child">
+  <parent>f2b_actions</parent>
   <regex type="pcre2">\[([^\]]+)\]\s+(Ban|Unban)\s+(\S+)</regex>
   <order>service,status,srcip</order>
 </decoder>
-<decoder name="f2b-filter">
+
+<!-- Filter (Found …) -->
+<decoder name="f2b_filter">
   <program_name>^fail2ban$</program_name>
   <prematch>fail2ban.filter</prematch>
 </decoder>
 
-<!-- Extract service, srcip, and the timestamp after the hyphen -->
-<decoder name="f2b-filter-child">
-  <parent>f2b-filter</parent>
+<decoder name="f2b_filter_child">
+  <parent>f2b_filter</parent>
   <regex type="pcre2">\[([^\]]+)\]\s+Found\s+(\S+)\s+-\s+(.+)$</regex>
   <order>service,srcip,event_time</order>
 </decoder>
-<decoder name="f2b-server-start">
+
+<!-- Server start -->
+<decoder name="f2b_server_start">
   <program_name>^fail2ban$</program_name>
   <prematch>fail2ban.server</prematch>
 </decoder>
 
-<!-- Capture the version string -->
-<decoder name="f2b-server-start-child">
-  <parent>f2b-server-start</parent>
+<decoder name="f2b_server_start_child">
+  <parent>f2b_server_start</parent>
   <regex type="pcre2">Starting\s+Fail2ban\s+v([0-9.]+)</regex>
   <order>version</order>
 </decoder>
-<decoder name="f2b-server-start">
+
+<!-- Server stop -->
+<decoder name="f2b_server_stop">
   <program_name>^fail2ban$</program_name>
   <prematch>fail2ban.server</prematch>
 </decoder>
 
-<!-- Capture the version string -->
-<decoder name="f2b-server-start-child">
-  <parent>f2b-server-start</parent>
-  <regex type="pcre2">Starting\s+Fail2ban\s+v([0-9.]+)</regex>
-  <order>version</order>
+<decoder name="f2b_server_stop_child">
+  <parent>f2b_server_stop</parent>
+  <regex type="pcre2">Exiting\s+Fail2ban</regex>
+  <order>stopped</order>
 </decoder>
