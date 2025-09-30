@@ -1,0 +1,16 @@
+<group name="aitm,aitm-honeytoken">
+  <rule id="105050" level="12">
+    <decoded_as>json</decoded_as>
+    <field name="suspicious">^true$</field>
+    <description>AiTM honeytoken loaded from non microsoft origin</description>
+    <group>aitm</group>
+  </rule>
+
+  <rule id="105051" level="12">
+    <decoded_as>json</decoded_as>
+    <field name="referer">^(?!.*microsoftonline\.com).*</field>
+    <options>no_full_log</options>
+    <description>AiTM honeytoken referer not microsoft</description>
+    <group>aitm</group>
+  </rule>
+</group>
