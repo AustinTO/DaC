@@ -1,13 +1,16 @@
 <group name="local,sysmon,windows">
-  <!-- Suppress Sysmon EID 11 -> 92213 when CleanMgr drops one of the known DISM provider DLLs -->
-  <rule id="100205" level="0">
+  <rule id="100920" level="0">
     <if_sid>92213</if_sid>
-    <!-- Must be cleanmgr.exe -->
+
+    <!-- must be cleanmgr.exe -->
     <field name="win.eventdata.image">(?i)\\cleanmgr\.exe$</field>
-    <!-- Must be in a GUID folder under Temp -->
+
+    <!-- must be a DLL in a GUID subfolder under Temp -->
     <field name="win.eventdata.targetFilename">(?i)\\AppData\\Local\\Temp\\[A-F0-9\-]{36}\\[^\\]+\.dll$</field>
-    <!-- End of filename must match one of the 27 DLLs in your list -->
-    <list> /var/ossec/etc/lists/cleanmgrdlls/cleanmgr_dlls </list>
-    <description>Exclude benign CleanMgr DISM provider DLLs from 92213</description>
+
+    <!-- ends with any filename listed in the cleanmgr_dlls list -->
+    <list field="win.eventdata.targetFilename" lookup="ends_with">cleanmgr_dlls</list>
+
+    <description>Exclude benign CleanMgr DISM provider DLLs from rule 92213</description>
   </rule>
 </group>
