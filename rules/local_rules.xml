@@ -1,21 +1,9 @@
 <group name="local,sysmon,windows">
-  <!-- Suppress CleanMgr-generated DISM provider DLL drops in Temp\{GUID}\*.dll -->
   <rule id="100920" level="0">
-    <!-- Only fire when the original detection (92213) fired -->
     <if_sid>92213</if_sid>
-
-    <!-- Must be Sysmon EID 11 "DLL" file-create classification -->
-    <field name="win.eventdata.rulename">(?i)^DLL$</field>
-
-    <!-- Must be cleanmgr.exe as the creator process -->
-    <field name="win.eventdata.image">(?i)\\cleanmgr\.exe$</field>
-
-    <!-- Target file must be a DISM provider DLL in a GUID-named subfolder under %LOCALAPPDATA%\Temp -->
-    <field name="win.eventdata.targetFilename">
-      (?i)\\AppData\\Local\\Temp\\[0-9a-f-]{36}\\
-      (?:AppxProvider|AssocProvider|CbsProvider|CompatProvider|DismCore|DismCorePS|DismProv|DmiProvider|FfuProvider|FolderProvider|GenericProvider|IBSProvider|ImagingProvider|IntlProvider|LogProvider|MsiProvider|OfflineSetupProvider|OSProvider|ProvProvider|SetupPlatformProvider|SmiProvider|SysprepProvider|TransmogProvider|UnattendProvider|VhdProvider|WimProvider)\.dll$
-    </field>
-
-    <description>Exclude benign CleanMgr DISM provider DLLs from rule 92213</description>
+    <field name="win.eventdata.ruleName" type="pcre2">(?i)^DLL$</field>
+    <field name="win.eventdata.image" type="pcre2">(?i)^[a-z]:\\windows\\system32\\cleanmgr\.exe$</field>
+    <field name="win.eventdata.targetFilename" type="pcre2">(?i)\\AppData\\Local\\Temp\\[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\\(?:AppxProvider|AssocProvider|CbsProvider|CompatProvider|DismCore|DismCorePS|DismProv|DmiProvider|FfuProvider|FolderProvider|GenericProvider|IBSProvider|ImagingProvider|IntlProvider|LogProvider|MsiProvider|OfflineSetupProvider|OSProvider|ProvProvider|SetupPlatformProvider|SmiProvider|SysprepProvider|TransmogProvider|UnattendProvider|VhdProvider|WimProvider)\.dll$</field>
+    <description>Exclude legitimate CleanMgr DISM provider DLL drops in Temp</description>
   </rule>
 </group>
